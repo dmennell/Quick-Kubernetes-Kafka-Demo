@@ -1,0 +1,195 @@
+{
+    "apiVersion": "V2",
+    "name": "edgelb-proxy",
+    "count": 1,
+    "autoCertificate": true,
+    "haproxy": {
+        "frontends": [
+            {
+                "bindPort": 6000,
+                "protocol": "HTTPS",
+                "certificates": [
+                    "$AUTOCERT"
+                ],
+                "linkBackend": {
+                    "defaultBackend": "ecommerce-prod"
+                }
+            },
+            {
+                "bindPort": 6001,
+                "protocol": "HTTPS",
+                "certificates": [
+                    "$AUTOCERT"
+                ],
+                "linkBackend": {
+                    "defaultBackend": "k8s-cluster-1"
+                }
+            },
+            {
+                "bindPort": 6002,
+                "protocol": "HTTPS",
+                "certificates": [
+                    "$AUTOCERT"
+                ],
+                "linkBackend": {
+                    "defaultBackend": "k8s-cluster-2"
+                }
+            },
+            {
+                "bindPort": 6003,
+                "protocol": "HTTPS",
+                "certificates": [
+                    "$AUTOCERT"
+                ],
+                "linkBackend": {
+                    "defaultBackend": "k8s-cluster-3"
+                }
+            },
+            {
+                "bindPort": 9094,
+                "protocol": "HTTP",
+                "linkBackend": {
+                    "defaultBackend": "grafana"
+                }
+            },
+            {
+                "bindPort": 9092,
+                "protocol": "HTTP",
+                "linkBackend": {
+                    "defaultBackend": "prometheus_server"
+                }
+            },
+            {
+                "bindPort": 9093,
+                "protocol": "HTTP",
+                "linkBackend": {
+                    "defaultBackend": "prometheus_alertmanager"
+                }
+            },
+            {
+                "bindPort": 9091,
+                "protocol": "HTTP",
+                "linkBackend": {
+                    "defaultBackend": "prometheus_pushgateway"
+                }
+            }
+        ],
+        "backends": [
+            {
+                "name": "ecommerce-prod",
+                "protocol": "HTTPS",
+                "services": [
+                    {
+                        "mesos": {
+                            "frameworkName": "ecommerce-prod",
+                            "taskNamePattern": "kube-control-plane"
+                        },
+                        "endpoint": {
+                            "portName": "apiserver"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "k8s-cluster-1",
+                "protocol": "HTTPS",
+                "services": [
+                    {
+                        "mesos": {
+                            "frameworkName": "k8s-cluster-1",
+                            "taskNamePattern": "kube-control-plane"
+                        },
+                        "endpoint": {
+                            "portName": "apiserver"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "k8s-cluster-2",
+                "protocol": "HTTPS",
+                "services": [
+                    {
+                        "mesos": {
+                            "frameworkName": "k8s-cluster-2",
+                            "taskNamePattern": "kube-control-plane"
+                        },
+                        "endpoint": {
+                            "portName": "apiserver"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "k8s-cluster-3",
+                "protocol": "HTTPS",
+                "services": [
+                    {
+                        "mesos": {
+                            "frameworkName": "kk8s-cluster-3",
+                            "taskNamePattern": "kube-control-plane"
+                        },
+                        "endpoint": {
+                            "portName": "apiserver"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "grafana",
+                "protocol": "HTTP",
+                "services": [
+                    {
+                        "endpoint": {
+                            "TYPE": "ADDRESS",
+                            "address": "grafana.grafana.l4lb.thisdcos.directory",
+                            "port": 3000
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "prometheus_server",
+                "protocol": "HTTP",
+                "services": [
+                    {
+                        "endpoint": {
+                            "TYPE": "ADDRESS",
+                            "address": "prometheus.prometheus.l4lb.thisdcos.directory",
+                            "port": 9092
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "prometheus_alertmanager",
+                "protocol": "HTTP",
+                "services": [
+                    {
+                        "endpoint": {
+                            "TYPE": "ADDRESS",
+                            "address": "alertmanager.prometheus.l4lb.thisdcos.directory",
+                            "port": 9093
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "prometheus_pushgateway",
+                "protocol": "HTTP",
+                "services": [
+                    {
+                        "endpoint": {
+                            "TYPE": "ADDRESS",
+                            "address": "pushgateway.prometheus.l4lb.thisdcos.directory",
+                            "port": 9091
+                        }
+                    }
+                ]
+            }
+        ],
+        "stats": {
+            "bindPort": 9090
+        }
+    }
+}

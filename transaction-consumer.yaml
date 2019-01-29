@@ -1,0 +1,19 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: transaction-consumer
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: transaction-consumer
+      labels:
+        app: transaction-consumer
+    spec:
+      containers:
+      - name: demo-consumer
+        image: markfjohnson/python-kafka-k8s
+        command: ["/usr/local/bin/python"]
+        imagePullPolicy: Always
+        args: ["-u","/python-k8s-samples/kafka_consumer.py", "--broker", "broker.kafka.l4lb.thisdcos.directory:9092"]
+
