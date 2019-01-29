@@ -5,7 +5,7 @@ This stuff needs to be done before you begin the demo
 
 Clear out your ./kube/conf file so there will be no conflicts
 
-### PRE-DEPLOY SERVICES AND CLIs
+### Pre-Deploy Services and CLI's
 there are numerous services that need to be pre-installed for the demo to work.  Run them individually to ensure that they al deploy properly.
 ```
 dcos package install --yes dcos-enterprise-cli
@@ -31,7 +31,7 @@ verify that everything is where you want it:
 `http://<Public-Node-IP>:9090/haproxy?stats`(Bookmark this page)
 
 
-### DEPLOY MKE & K8S-CLUSTER-1 & SOCK-SHOP APP"
+### Deploy MKE, "k8s-cluster-1" & "sock-shop" App"
 
 There are numerous permissions sets that need to be created to get the demo to work,  Run these indivudually to ensure that they all run correctly:
 
@@ -66,16 +66,9 @@ kubectl create namespace sock-shop
 kubectl apply -f complete-demo.yaml
 ```
 
-
-
-
-
-
-
-
-   
-CONNECT PROMETHEUS to GRAFANA and get the Kafka DC/OS Dashboard from Grafana.com
-    (Bookmark the Grafana Dashboard Page)
+The sock-shop app deploys with a "Node Port" for ingress @TCP:30001.  It can be accessed via the public kubelet on the Public DC/OS agent @ TCP:30001.
+  
+Connect Prometheus 
 
 
 
@@ -85,6 +78,9 @@ CONNECT PROMETHEUS to GRAFANA and get the Kafka DC/OS Dashboard from Grafana.com
 All of the above is pre-setup work
 -------------------------------------------------
 Below is Live Demo Stuff
+
+
+
 
 
 
