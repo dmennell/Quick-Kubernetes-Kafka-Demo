@@ -103,6 +103,7 @@ dcos kafka topic list
 ```
 
 Confirm the cluster is done deploying
+
 `dcos kubernetes cluster debug plan status deploy --cluster-name=k8s-cluster-2`
 
 Create Kubectl Connection to "k8s-cluster-2"
@@ -117,7 +118,7 @@ dcos kubernetes cluster kubeconfig \
 Verify kubectl connection 
 `kubectl get nodes`
 
-DEPLOY KAFKA PRODUCER ON K8s-cluster-2
+Deploy Kafka Producer on "k8s-cluster-2"
 ```
 kubectl apply -f kafka-demo-generator.yaml
 kubectl get deployments
@@ -127,7 +128,7 @@ Verify Writing to KAFKA
 
 `dcos kafka topic offsets transactions`
 
-DEPLOY CONSUMER on k8s-cluster-2 (Copy the Pod ID)
+Deploy Kafka Consumer on "k8s-cluster-2" (Copy the Pod ID)
 ```
 kubectl apply -f transaction-consumer.yaml
 kubectl get deployments
