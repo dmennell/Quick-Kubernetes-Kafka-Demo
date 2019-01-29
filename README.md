@@ -17,8 +17,11 @@ We will use EdgeLB to access numerous services on DC/OS including Kubernetes API
 there are numerous services that need to be pre-installed for the demo to work.  Run them individually to ensure that they al deploy properly.
 
 `dcos package install --yes dcos-enterprise-cli`
+
 `dcos package install --yes kafka`
+
 `dcos package install --yes prometheus`
+
 `dcos package install --yes grafana`
     
 
