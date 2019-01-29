@@ -71,16 +71,9 @@ The sock-shop app deploys with a "Node Port" for ingress @TCP:30001.  It can be 
 Connect Prometheus 
 
 
-
-
-
-
 All of the above is pre-setup work
 -------------------------------------------------
 Below is Live Demo Stuff
-
-
-
 
 
 ## SHOWTIME
@@ -88,7 +81,9 @@ Below is Live Demo Stuff
 ### Overview
 Start by giving them a quick tour of DC/OS (Data Services, CICD, Kubernetes, etc.)
 Talk about "Why Kubernetes With DC/OS"
+Show Sock-Shop running on DC/OS.
 
+### Demo Deployment of Kubernetes and Apps that talk to Data Services
 DEPLOY NEW KUBERNETES CLUSTER via GUI
 * Create "k8s-cluster-2" from the GUI with defaults (using "k8s-cluster-2" for service, service name, and /sa for secret)
 * DEPLOY
@@ -129,6 +124,7 @@ kubectl get deployments
 kubectl get pods
 ```
 Verify Writing to KAFKA
+
 `dcos kafka topic offsets transactions`
 
 DEPLOY CONSUMER on k8s-cluster-2 (Copy the Pod ID)
@@ -137,8 +133,8 @@ kubectl apply -f transaction-consumer.yaml
 kubectl get deployments
 kubectl get pods
 ```
+Verify reading data from Kafka Topic
 
-VERIFY READING DATA FROM KAFKA TOPIC
 `kubectl logs <PASTE-POD-ID-FROM-ABOVE> | more`
 
 
