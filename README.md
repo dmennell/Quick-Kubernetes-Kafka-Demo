@@ -5,51 +5,48 @@ This stuff needs to be done before you begin the demo
 
 Clear out your ./kube/conf file so there will be no conflicts
 
-### Add EdgeLB Repos and Deploy EdgeLB
-We will use EdgeLB to access numerous services on DC/OS including Kubernetes API Server, Grafana, and Prometheus
-`dcos package repo add --index=0 edgelb https://downloads.mesosphere.com/edgelb/v1.2.3/assets/stub-universe-edgelb.json`
-    
-`dcos package repo add --index=0 edgelb-pool https://downloads.mesosphere.com/edgelb-pool/v1.2.3/assets/stub-universe-edgelb-pool.json`
-    
-`dcos package install --yes edgelb`
-
 ### PRE-DEPLOY SERVICES AND CLIs
 there are numerous services that need to be pre-installed for the demo to work.  Run them individually to ensure that they al deploy properly.
+```
+dcos package install --yes dcos-enterprise-cli
+dcos package install --yes kafka
+dcos package install --yes prometheus
+dcos package install --yes grafana
+```
 
-`dcos package install --yes dcos-enterprise-cli`
+### Add EdgeLB Repo, Deploy EdgeLB, and Pool
+We will use EdgeLB to access numerous services on DC/OS including Kubernetes API Server, Grafana, and Prometheus.
+```
+dcos package repo add --index=0 edgelb https://downloads.mesosphere.com/edgelb/v1.2.3/assets/stub-universe-edgelb.json
+dcos package repo add --index=0 edgelb-pool https://downloads.mesosphere.com/edgelb-pool/v1.2.3/assets/stub-universe-edgelb-pool.json
+dcos package install --yes edgelb
+```
 
-`dcos package install --yes kafka`
-
-`dcos package install --yes prometheus`
-
-`dcos package install --yes grafana`
-    
-
-### PREDEPLOY MKE & K8S-CLUSTER-1
-There are numerous permissions sets that need to be created to get the demo to work,  Run these indivudually to ensure that they all run correctly:
-
-`bash mke_AccountsPermissions.sh`
-    
-`bash k8sCluster_AccountsPermissions.sh k8s-cluster-1`
-    
-`bash k8sCluster_AccountsPermissions.sh k8s-cluster-2`
-    
-`bash k8sCluster_AccountsPermissions.sh k8s-cluster-3`
-    
-`dcos package install --yes kubernetes --options=mke-options.json`
-    
- Install Kubernetes cluster "k8s-cluster-1" with a few Kubelets and atleast 1 public kubelet
-
-### DEPLOY EDGELB POOL
-This Pool will be used to provide outside connectivity to DC/OS Services     
+The following edgeLB pool will be used to provide outside connectivity to DC/OS Services     
 
 `dcos edgelb create edgelb-proxy.json`
 
 verify that everything is where you want it:
-    
+ 
 `http://<Public-Node-IP>:9090/haproxy?stats`(Bookmark this page)
 
-### Prepare "K8S-CLUSTER-1"
+
+### DEPLOY MKE & K8S-CLUSTER-1 & SOCK-SHOP APP"
+
+There are numerous permissions sets that need to be created to get the demo to work,  Run these indivudually to ensure that they all run correctly:
+
+```
+bash mke_AccountsPermissions.sh
+bash k8sCluster_AccountsPermissions.sh k8s-cluster-1  
+bash k8sCluster_AccountsPermissions.sh k8s-cluster-2   
+bash k8sCluster_AccountsPermissions.sh k8s-cluster-3  
+dcos package install --yes kubernetes --options=mke-options.json
+```
+
+Install Kubernetes cluster "k8s-cluster-1" with a few Kubelets and atleast 1 public kubelet
+    Do it in the GUI
+
+Connect Kubectl "kubernetes-cluster-1"
 ```
 dcos kubernetes cluster kubeconfig \
     --insecure-skip-tls-verify \
@@ -57,9 +54,26 @@ dcos kubernetes cluster kubeconfig \
     --cluster-name=k8s-cluster-1 \
     --apiserver-url=https://<EDGELB-POOL-PUBLIC-IP>:6001
 ```
+Now deploy Sock-Shop Microservices app to k8s-cluster-1 
+
+Download the "Sock-Shop Microservices Demo" from Github here:
+* curl -O https://github.com/microservices-demo/microservices-demo
+* unzip it
+* go to the "./deploy/kubernetes" directory
+
+```
 kubectl create namespace sock-shop
 kubectl apply -f complete-demo.yaml
+```
 
+
+
+
+
+
+
+
+   
 CONNECT PROMETHEUS to GRAFANA and get the Kafka DC/OS Dashboard from Grafana.com
     (Bookmark the Grafana Dashboard Page)
 
@@ -104,6 +118,10 @@ Create Kubectl Connection to "k8s-cluster-2"
         --cluster-name=k8s-cluster-2 \
         --apiserver-url=https://<EDGELB-POOL-PUBLIC-IP>:6002
     ```
+
+
+
+
 
 Verify kubectl connection
     `kubectl get nodes`
