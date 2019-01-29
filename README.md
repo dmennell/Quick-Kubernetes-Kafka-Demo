@@ -28,23 +28,27 @@ there are numerous services that need to be pre-installed for the demo to work. 
 ### PREDEPLOY MKE & K8S-CLUSTER-1
 There are numerous permissions sets that need to be created to get the demo to work,  Run these indivudually to ensure that they all run correctly:
 
-    `bash mke_AccountsPermissions.sh`
+`bash mke_AccountsPermissions.sh`
     
-    `bash k8sCluster_AccountsPermissions.sh k8s-cluster-1`
+`bash k8sCluster_AccountsPermissions.sh k8s-cluster-1`
     
-    `bash k8sCluster_AccountsPermissions.sh k8s-cluster-2`
+`bash k8sCluster_AccountsPermissions.sh k8s-cluster-2`
     
-    `bash k8sCluster_AccountsPermissions.sh k8s-cluster-3`
+`bash k8sCluster_AccountsPermissions.sh k8s-cluster-3`
     
-    `dcos package install --yes kubernetes --options=mke-options.json`
+`dcos package install --yes kubernetes --options=mke-options.json`
     
-    Install Kubernetes cluster "k8s-cluster-1" with a few Kubelets and atleast 1 public kubelet
+ Install Kubernetes cluster "k8s-cluster-1" with a few Kubelets and atleast 1 public kubelet
 
 ### DEPLOY EDGELB POOL
-    `dcos edgelb create edgelb-proxy.json`
-    verify that everything is where you want it:
-    `http://<Public-Node-IP>:9090/haproxy?stats`
-    (Bookmark this page)
+This Pool will be used to provide outside connectivity to DC/OS Services     
+
+`dcos edgelb create edgelb-proxy.json`
+
+verify that everything is where you want it:
+    
+ `http://<Public-Node-IP>:9090/haproxy?stats`
+ (Bookmark this page)
 
 CREATE KUBECTL CONNECTION TO "K8S-CLUSTER-1"
     ```
