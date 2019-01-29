@@ -84,7 +84,7 @@ Talk about "Why Kubernetes With DC/OS"
 Show Sock-Shop running on DC/OS.
 
 ### Demo Deployment of Kubernetes and Apps that talk to Data Services
-DEPLOY NEW KUBERNETES CLUSTER via GUI
+Deploy a new Kubernetes cluster via GUI
 * Create "k8s-cluster-2" from the GUI with defaults (using "k8s-cluster-2" for service, service name, and /sa for secret)
 * DEPLOY
 
