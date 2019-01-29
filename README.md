@@ -47,17 +47,18 @@ This Pool will be used to provide outside connectivity to DC/OS Services
 
 verify that everything is where you want it:
     
- `http://<Public-Node-IP>:9090/haproxy?stats`
- (Bookmark this page)
+`http://<Public-Node-IP>:9090/haproxy?stats`(Bookmark this page)
 
-CREATE KUBECTL CONNECTION TO "K8S-CLUSTER-1"
-    ```
-    dcos kubernetes cluster kubeconfig \
-        --insecure-skip-tls-verify \
-        --context-name=k8s-cluster-1 \
-        --cluster-name=k8s-cluster-1 \
-        --apiserver-url=https://<EDGELB-POOL-PUBLIC-IP>:6001
-    ```
+### Prepare "K8S-CLUSTER-1"
+```
+dcos kubernetes cluster kubeconfig \
+    --insecure-skip-tls-verify \
+    --context-name=k8s-cluster-1 \
+    --cluster-name=k8s-cluster-1 \
+    --apiserver-url=https://<EDGELB-POOL-PUBLIC-IP>:6001
+```
+kubectl create namespace sock-shop
+kubectl apply -f complete-demo.yaml
 
 CONNECT PROMETHEUS to GRAFANA and get the Kafka DC/OS Dashboard from Grafana.com
     (Bookmark the Grafana Dashboard Page)
@@ -73,7 +74,7 @@ Below is Live Demo Stuff
 
 
 
-##### SHOWTIME #####
+## SHOWTIME
 
 Start by giving them a quick tour of DC/OS (Data Services, CICD, Kubernetes, etc.)
 Talk about "Why Kubernetes With DC/OS"
@@ -83,7 +84,7 @@ DEPLOY NEW KUBERNETES CLUSTER via GUI
     DEPLOY
 
 Deploy Kubernetes Cluster 3 via CLI (automation)
-    `dcos kubernetes cluster debug plan status deploy --cluster-name=k8s-cluster-3`
+    `dcos package install kubernetes-cluster --options=k8s-cluster-3`
 
 Check Back in on Cluster 2 with CLI
     `dcos kubernetes cluster debug plan status deploy --cluster-name=k8s-cluster-2`
@@ -107,21 +108,19 @@ Create Kubectl Connection to "k8s-cluster-2"
 Verify kubectl connection
     `kubectl get nodes`
 
-DEPLOY & VERIFY KAFKA PRODUCER ON K8s-cluster-2
+DEPLOY KAFKA PRODUCER ON K8s-cluster-2
     `kubectl apply -f kafka-demo-generator.yaml`
     `kubectl get deployments`
     `kubectl get pods`
 VERIFY Writing to KAFKA
     `dcos kafka topic offsets transactions`
 
-DEPLOY & VERIFY CONSUMER on k8s-cluster-2 (Copy the Pod ID)
+DEPLOY CONSUMER on k8s-cluster-2 (Copy the Pod ID)
     `kubectl apply -f transaction-consumer.yaml`
     `kubectl get deployments`
     `kubectl get pods`
 VERIFY READING DATA FROM KAFKA TOPIC
     `kubectl logs <PASTE-POD-ID-FROM-ABOVE> | more`
-
-
 
 # Recapwhat we did...
 and as easy as it was to stand up, it is just as easy to tear down :-)
